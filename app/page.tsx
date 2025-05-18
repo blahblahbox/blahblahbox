@@ -1,17 +1,21 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
+import { SocialLinks } from "@/components/social-links"
 import { Button } from "@/components/ui/button"
 import { TalkIcon, ListenIcon, ChatIcon, BoxLogo } from "@/components/icons"
-import { generateUsername } from "@/lib/username-generator"
-
+import { generateUsername } from "@/lib/username-generator" 
+import { io, type Socket } from "socket.io-client"
 export default function Home() {
   const router = useRouter()
+  const [onlineCount, setOnlineCount] = useState(0)
+  const socketRef = useRef<any>(null)
   const [selectedRole, setSelectedRole] = useState<string | null>(null)
-  const [isBoxOpen, setIsBoxOpen] = useState(false)
-  const [onlineCount] = useState(912)
+  const [isBoxOpen, setIsBoxOpen] = useState(false) 
+   
+ 
 
   // Remove or comment out this useEffect
   /*
@@ -29,6 +33,22 @@ useEffect(() => {
   const handleRoleSelect = (role: string) => {
     setSelectedRole(role)
   }
+
+  useEffect(() => {
+    import('socket.io-client').then((io) => {
+      socketRef.current = io.connect('/api/socket', {
+        path: '/api/socket'
+      })
+
+      socketRef.current?.on('online-count', (count: number) => {
+        setOnlineCount(count)
+      })
+
+      return () => {
+        socketRef.current?.disconnect()
+      }
+    })
+  }, [])
 
   const handleFindMatch = async () => {
     if (!selectedRole) return
@@ -79,7 +99,7 @@ useEffect(() => {
                   shadow-[0_2px_4px_rgba(0,0,0,0.15)]
                   hover:bg-[#1B221D] hover:text-white
                   hover:shadow-[inset_0_4px_4px_rgba(0,0,0,1)]
-                  ${selectedRole === "venter" ? "bg-[#1B221D] text-white shadow-[inset_0_4px_4px_rgba(0,0,0,1)]" : ""}
+                  ${selectedRole === "venter" ? "bg-foreground text-white shadow-[inset_0_4px_4px_rgba(0,0,0,1)]" : ""}
                 `}
               >
                 <TalkIcon />
@@ -105,7 +125,7 @@ useEffect(() => {
                   shadow-[0_2px_4px_rgba(0,0,0,0.15)]
                   hover:bg-[#1B221D] hover:text-white
                   hover:shadow-[inset_0_4px_4px_rgba(0,0,0,1)]
-                  ${selectedRole === "listener" ? "bg-[#1B221D] text-white shadow-[inset_0_4px_4px_rgba(0,0,0,1)]" : ""}
+                  ${selectedRole === "listener" ? "bg-foreground text-white shadow-[inset_0_4px_4px_rgba(0,0,0,1)]" : ""}
                 `}
               >
                 <ListenIcon />
@@ -130,8 +150,7 @@ useEffect(() => {
                   bg-[#ECDFCF] text-[#1B221D] transition-all duration-200
                   shadow-[0_2px_4px_rgba(0,0,0,0.15)]
                   hover:bg-[#1B221D] hover:text-white
-                  hover:shadow-[inset_0_4px_4px_rgba(0,0,0,1)]
-                  ${selectedRole === "chat" ? "bg-[#1B221D] text-white shadow-[inset_0_4px_4px_rgba(0,0,0,1)]" : ""}
+                  ${selectedRole === "chat" ? "bg-foreground text-white" : ""}
                 `}
               >
                 <ChatIcon />
@@ -163,20 +182,14 @@ useEffect(() => {
         >
           <p className="text-gray-600 text-sm">No Data Stored. No History. Just Conversation.</p>
           <div className="flex items-center justify-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-primary" />
-            <p className="text-gray-500 text-sm">{onlineCount} People Online</p>
+            <div className="w-2 h-2 rounded-full bg-primary" /> 
+            
+            <p className="text-gray-500 text-sm"> {onlineCount === 1 ? "Person" : `${onlineCount} People`} Online</p>
           </div>
-        </motion.div>
+        </motion.div> 
       </div>
+      <SocialLinks isOpen={isBoxOpen} setIsOpen={setIsBoxOpen} />
 
-      <motion.button
-        className="fixed bottom-8 right-8"
-        onClick={() => setIsBoxOpen(!isBoxOpen)}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-      >
-        <BoxLogo isOpen={isBoxOpen} />
-      </motion.button>
     </main>
   )
 }

@@ -38,5 +38,7 @@ export type ClientToServerEvents = {
   acceptCall: () => void
   declineCall: () => void
   endCall: () => void
+  shuffle: () => void 
+  rolechange: (role: UserRole) => void
 }
 

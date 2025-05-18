@@ -33,7 +33,7 @@ export default function ChatPage() {
   const [onlineCount, setOnlineCount] = useState(1)
   const [callStatus, setCallStatus] = useState<CallStatus>("idle")
   const [isCallInitiator, setIsCallInitiator] = useState(false)
-  const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents>>()
+  const socketRef = useRef<Socket<ServerToClientEvents, ClientToServerEvents> |null>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const handleLogoClick = () => {
@@ -113,7 +113,7 @@ export default function ChatPage() {
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault()
     if (inputMessage.trim() === "" || matchStatus !== "connected") return
-    socketRef.current?.emit("message", { content: inputMessage, role })
+    socketRef.current?.emit("message", inputMessage)
     setInputMessage("")
   }
 
@@ -125,7 +125,7 @@ export default function ChatPage() {
 
   const handleRoleChange = (newRole: UserRole) => {
     setRole(newRole)
-    socketRef.current?.emit("role-change", newRole)
+    socketRef.current?.emit("rolechange", newRole)
   }
 
   const handleInitiateCall = () => {
@@ -217,7 +217,7 @@ export default function ChatPage() {
           <div className="flex items-center justify-center gap-2 mt-1">
             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <p className="text-xs text-gray-500">
-              {onlineCount} {onlineCount === 1 ? "Person" : "People"} Online
+               {onlineCount === 1 ? "Person" : "People" } Online
             </p>
           </div>
         </div>

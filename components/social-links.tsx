@@ -27,7 +27,7 @@ export function SocialLinks() {
 
   return (
     <div className="fixed bottom-8 right-8 z-50 flex flex-col items-end">
-      <AnimatePresence>
+      <AnimatePresence mode="popLayout">
         {isOpen && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}

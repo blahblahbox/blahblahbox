@@ -1,4 +1,6 @@
-export function BoxLogo({ isOpen = false }: { isOpen?: boolean }) {
+export function BoxLogo({  isOpen = false }: { isOpen?: boolean }) { 
+  // Add prop logging
+  console.log('BoxLogo rendered with isOpen:', isOpen)
   return isOpen ? (
     <svg width="75" height="57" viewBox="0 0 75 57" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path
