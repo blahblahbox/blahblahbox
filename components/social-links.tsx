@@ -1,12 +1,16 @@
+// SocialLinks.tsx
 "use client"
 
-import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { BoxLogo } from "@/components/icons"
 
-export function SocialLinks() {
-  const [isOpen, setIsOpen] = useState(false)
-
+export function SocialLinks({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean
+  setIsOpen: (open: boolean) => void
+}) {
   const links = [
     {
       id: "twitter",
@@ -59,7 +63,11 @@ export function SocialLinks() {
         )}
       </AnimatePresence>
 
-      <motion.button onClick={() => setIsOpen(!isOpen)} whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+      <motion.button
+        onClick={() => setIsOpen(!isOpen)}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
         <BoxLogo isOpen={isOpen} />
       </motion.button>
     </div>

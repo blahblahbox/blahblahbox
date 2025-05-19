@@ -195,7 +195,9 @@ export default function ChatPage() {
     }
   }
 
-  return (
+  return ( 
+    
+    
     <main className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground p-4">
       <div
         className="
@@ -204,7 +206,8 @@ export default function ChatPage() {
           h-[80vh]
           flex flex-col
         "
-      >
+      > 
+
         {/* Header */}
         <div className="text-center mb-4 flex-shrink-0">
           <h1
@@ -217,7 +220,7 @@ export default function ChatPage() {
           <div className="flex items-center justify-center gap-2 mt-1">
             <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <p className="text-xs text-gray-500">
-               {onlineCount === 1 ? "Person" : "People" } Online
+               {onlineCount === 1 ? `${onlineCount} Person` : `${onlineCount} People` } Online
             </p>
           </div>
         </div>
@@ -388,9 +391,13 @@ export default function ChatPage() {
           {callStatus === "ringing" && (
             <CallDialog callerName={matchUsername} onAccept={handleAcceptCall} onDecline={handleDeclineCall} />
           )}
-        </div>
-      </div>
-    </main>
-  )
-}
+        </div> 
+        
+      </div>  
+      
+      
+    </main>  
+      
 
+        )
+}

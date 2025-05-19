@@ -1,4 +1,4 @@
-export function BoxLogo({  isOpen = false }: { isOpen?: boolean }) { 
+export function BoxLogo({ isOpen = false }: { isOpen?: boolean }) { 
   // Add prop logging
   console.log('BoxLogo rendered with isOpen:', isOpen)
   return isOpen ? (
